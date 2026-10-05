@@ -790,6 +790,40 @@
     "Negative sheen"
    ],
    "source": "existing"
+  },
+  {
+   "file": "SPRITESHEETS/tooltips-jokers.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/tooltips-jokers.png",
+   "image_px": [
+    3190,
+    6160
+   ],
+   "tile_px": [
+    319,
+    308
+   ],
+   "layout": "grid",
+   "columns": 10,
+   "rows": 20,
+   "count": 197,
+   "order": "pre-rendered card descriptions (game repo dev/make_tooltips.py): jokers 1..150 (index = id - 1), then variant tiles (dev/reference/tooltips.json variant_base). Each tooltip is drawn at the top of its cell; heights in dev/reference/tooltips.json."
+  },
+  {
+   "file": "SPRITESHEETS/tooltips-cards.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/tooltips-cards.png",
+   "image_px": [
+    3190,
+    4004
+   ],
+   "tile_px": [
+    319,
+    308
+   ],
+   "layout": "grid",
+   "columns": 10,
+   "rows": 13,
+   "count": 123,
+   "order": "pre-rendered card descriptions (game repo dev/make_tooltips.py): tarots, planets, spectrals, vouchers, packs (by type), tags (dev/reference/tooltips.json base). Each tooltip is drawn at the top of its cell; heights in dev/reference/tooltips.json."
   }
  ]
 }

@@ -1976,7 +1976,12 @@ def write_manifest():
                      'image centre = Q - ((c - (C-1)/2) w, ((R-1)/2 - r) h); mask with one tile-sized polygon at Q.',
         'sheets': sheets,
     }
-    with open(os.path.join(SHEETS, 'manifest.json'), 'w') as f:
+    # keep entries written by other generators (e.g. the game repo's dev/make_tooltips.py)
+    path = os.path.join(SHEETS, 'manifest.json')
+    if os.path.exists(path):
+        mine = {e['file'] for e in sheets}
+        sheets += [e for e in json.load(open(path)).get('sheets', []) if e['file'] not in mine]
+    with open(path, 'w') as f:
         json.dump(doc, f, indent=1, ensure_ascii=False)
         f.write('\n')
 
