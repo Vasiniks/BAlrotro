@@ -1,5 +1,5 @@
 {
- "about": "Sprite sheets served from https://vasiniks.github.io/BAlrotro/SPRITESHEETS/. Tiles have no padding or margin. Index i (0-based) of a sheet with C columns sits at column i mod C, row floor(i / C). Regenerate the original sheets and this file with: python3 tools/make_sprites.py",
+ "about": "Sprite sheets served from https://vasiniks.github.io/BAlrotro/. Tiles have no padding. Index i of a sheet with C columns sits at column i mod C, row floor(i / C). Rebuild: python3 tools/make_sheets.py",
  "mask_rule": "To show tile (c, r) of a C x R sheet drawn at w x h graph units per tile, centred on Q: image centre = Q - ((c - (C-1)/2) w, ((R-1)/2 - r) h); mask with one tile-sized polygon at Q.",
  "sheets": [
   {
@@ -17,12 +17,11 @@
     34,
     34
    ],
-   "scale": 4,
    "layout": "vertical strip",
    "columns": 1,
    "rows": 30,
    "count": 30,
-   "order": "Small Blind, Big Blind, then the 28 bosses in dev/reference/blinds.json order (index = blind id - 1). Face colour = game.lua boss_colour; showdown bosses have gold notches.",
+   "order": "blinds.json order (Small, Big, then the bosses); frame 0 of each chip",
    "names": [
     "Small Blind",
     "Big Blind",
@@ -55,7 +54,61 @@
     "Crimson Heart",
     "Cerulean Bell"
    ],
-   "source": "tools/make_sprites.py (original art)"
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
+  },
+  {
+   "file": "SPRITESHEETS/blinds-anim.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/blinds-anim.png",
+   "image_px": [
+    2856,
+    4080
+   ],
+   "tile_px": [
+    136,
+    136
+   ],
+   "native_px": [
+    34,
+    34
+   ],
+   "layout": "grid",
+   "columns": 21,
+   "rows": 30,
+   "count": 630,
+   "order": "row = blinds.json order, column = animation frame 0..20",
+   "names": [
+    "Small Blind",
+    "Big Blind",
+    "The Hook",
+    "The Ox",
+    "The House",
+    "The Wall",
+    "The Wheel",
+    "The Arm",
+    "The Club",
+    "The Fish",
+    "The Psychic",
+    "The Goad",
+    "The Water",
+    "The Window",
+    "The Manacle",
+    "The Eye",
+    "The Mouth",
+    "The Plant",
+    "The Serpent",
+    "The Pillar",
+    "The Needle",
+    "The Head",
+    "The Tooth",
+    "The Flint",
+    "The Mark",
+    "Amber Acorn",
+    "Verdant Leaf",
+    "Violet Vessel",
+    "Crimson Heart",
+    "Cerulean Bell"
+   ],
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
   },
   {
    "file": "SPRITESHEETS/tags.png",
@@ -72,12 +125,11 @@
     34,
     34
    ],
-   "scale": 4,
    "layout": "vertical strip",
    "columns": 1,
    "rows": 24,
    "count": 24,
-   "order": "dev/reference/tags.json order (index = tag id - 1)",
+   "order": "tags.json order",
    "names": [
     "Uncommon Tag",
     "Rare Tag",
@@ -104,7 +156,7 @@
     "Orbital Tag",
     "Economy Tag"
    ],
-   "source": "tools/make_sprites.py (original art)"
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
   },
   {
    "file": "SPRITESHEETS/vouchers.png",
@@ -121,12 +173,11 @@
     71,
     95
    ],
-   "scale": 4,
    "layout": "grid",
    "columns": 4,
    "rows": 8,
    "count": 32,
-   "order": "dev/reference/vouchers.json order (index = voucher id - 1), row-major, 4 per row: even index = base voucher (silver trim, 1 star), odd = its upgrade (gold trim, 2 stars)",
+   "order": "vouchers.json order, row-major, 4 per row",
    "names": [
     "Overstock",
     "Overstock Plus",
@@ -161,7 +212,7 @@
     "Paint Brush",
     "Palette"
    ],
-   "source": "tools/make_sprites.py (original art)"
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
   },
   {
    "file": "SPRITESHEETS/boosters.png",
@@ -178,47 +229,46 @@
     71,
     95
    ],
-   "scale": 4,
    "layout": "grid",
    "columns": 4,
    "rows": 8,
    "count": 32,
-   "order": "dev/reference/packs.json pack_types order, one tile per art variant (variants list order), row-major, 4 per row",
+   "order": "packs.json pack_types order, one tile per art variant (variants list order), row-major, 4 per row",
    "names": [
-    "Arcana Pack (art 1)",
-    "Arcana Pack (art 2)",
-    "Arcana Pack (art 3)",
-    "Arcana Pack (art 4)",
-    "Jumbo Arcana Pack (art 1)",
-    "Jumbo Arcana Pack (art 2)",
-    "Mega Arcana Pack (art 1)",
-    "Mega Arcana Pack (art 2)",
-    "Celestial Pack (art 1)",
-    "Celestial Pack (art 2)",
-    "Celestial Pack (art 3)",
-    "Celestial Pack (art 4)",
-    "Jumbo Celestial Pack (art 1)",
-    "Jumbo Celestial Pack (art 2)",
-    "Mega Celestial Pack (art 1)",
-    "Mega Celestial Pack (art 2)",
-    "Standard Pack (art 1)",
-    "Standard Pack (art 2)",
-    "Standard Pack (art 3)",
-    "Standard Pack (art 4)",
-    "Jumbo Standard Pack (art 1)",
-    "Jumbo Standard Pack (art 2)",
-    "Mega Standard Pack (art 1)",
-    "Mega Standard Pack (art 2)",
-    "Buffoon Pack (art 1)",
-    "Buffoon Pack (art 2)",
-    "Jumbo Buffoon Pack (art 1)",
-    "Mega Buffoon Pack (art 1)",
-    "Spectral Pack (art 1)",
-    "Spectral Pack (art 2)",
-    "Jumbo Spectral Pack (art 1)",
-    "Mega Spectral Pack (art 1)"
+    "Arcana Pack (p_arcana_normal_1)",
+    "Arcana Pack (p_arcana_normal_2)",
+    "Arcana Pack (p_arcana_normal_3)",
+    "Arcana Pack (p_arcana_normal_4)",
+    "Jumbo Arcana Pack (p_arcana_jumbo_1)",
+    "Jumbo Arcana Pack (p_arcana_jumbo_2)",
+    "Mega Arcana Pack (p_arcana_mega_1)",
+    "Mega Arcana Pack (p_arcana_mega_2)",
+    "Celestial Pack (p_celestial_normal_1)",
+    "Celestial Pack (p_celestial_normal_2)",
+    "Celestial Pack (p_celestial_normal_3)",
+    "Celestial Pack (p_celestial_normal_4)",
+    "Jumbo Celestial Pack (p_celestial_jumbo_1)",
+    "Jumbo Celestial Pack (p_celestial_jumbo_2)",
+    "Mega Celestial Pack (p_celestial_mega_1)",
+    "Mega Celestial Pack (p_celestial_mega_2)",
+    "Standard Pack (p_standard_normal_1)",
+    "Standard Pack (p_standard_normal_2)",
+    "Standard Pack (p_standard_normal_3)",
+    "Standard Pack (p_standard_normal_4)",
+    "Jumbo Standard Pack (p_standard_jumbo_1)",
+    "Jumbo Standard Pack (p_standard_jumbo_2)",
+    "Mega Standard Pack (p_standard_mega_1)",
+    "Mega Standard Pack (p_standard_mega_2)",
+    "Buffoon Pack (p_buffoon_normal_1)",
+    "Buffoon Pack (p_buffoon_normal_2)",
+    "Jumbo Buffoon Pack (p_buffoon_jumbo_1)",
+    "Mega Buffoon Pack (p_buffoon_mega_1)",
+    "Spectral Pack (p_spectral_normal_1)",
+    "Spectral Pack (p_spectral_normal_2)",
+    "Jumbo Spectral Pack (p_spectral_jumbo_1)",
+    "Mega Spectral Pack (p_spectral_mega_1)"
    ],
-   "source": "tools/make_sprites.py (original art)"
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
   },
   {
    "file": "SPRITESHEETS/stakes.png",
@@ -235,12 +285,11 @@
     29,
     29
    ],
-   "scale": 4,
    "layout": "vertical strip",
    "columns": 1,
    "rows": 8,
    "count": 8,
-   "order": "White, Red, Green, Black, Blue, Purple, Orange, Gold (chip shows the stake number 1-8)",
+   "order": "White, Red, Green, Black, Blue, Purple, Orange, Gold",
    "names": [
     "White Stake",
     "Red Stake",
@@ -251,7 +300,139 @@
     "Orange Stake",
     "Gold Stake"
    ],
-   "source": "tools/make_sprites.py (original art)"
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
+  },
+  {
+   "file": "SPRITESHEETS/backs.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/backs.png",
+   "image_px": [
+    1136,
+    1520
+   ],
+   "tile_px": [
+    284,
+    380
+   ],
+   "native_px": [
+    71,
+    95
+   ],
+   "layout": "grid",
+   "columns": 4,
+   "rows": 4,
+   "count": 16,
+   "order": "deck backs, Balatro deck order",
+   "names": [
+    "b_red",
+    "b_blue",
+    "b_yellow",
+    "b_green",
+    "b_black",
+    "b_magic",
+    "b_nebula",
+    "b_ghost",
+    "b_abandoned",
+    "b_checkered",
+    "b_zodiac",
+    "b_painted",
+    "b_anaglyph",
+    "b_plasma",
+    "b_erratic",
+    "b_challenge"
+   ],
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
+  },
+  {
+   "file": "SPRITESHEETS/shop-sign.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/shop-sign.png",
+   "image_px": [
+    452,
+    912
+   ],
+   "tile_px": [
+    452,
+    228
+   ],
+   "native_px": [
+    113,
+    57
+   ],
+   "layout": "vertical strip",
+   "columns": 1,
+   "rows": 4,
+   "count": 4,
+   "order": "the SHOP sign, animation frames 0..3",
+   "names": [
+    "frame 0",
+    "frame 1",
+    "frame 2",
+    "frame 3"
+   ],
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
+  },
+  {
+   "file": "SPRITESHEETS/ui-icons.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/ui-icons.png",
+   "image_px": [
+    288,
+    296
+   ],
+   "tile_px": [
+    288,
+    296
+   ],
+   "native_px": [
+    72,
+    74
+   ],
+   "layout": "vertical strip",
+   "columns": 1,
+   "rows": 1,
+   "count": 1,
+   "order": "Balatro UI icon sheet as supplied (4 x 4 icons: chip, A, flame, #, suits; second half = high-contrast colours)",
+   "names": [
+    "UI icons"
+   ],
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
+  },
+  {
+   "file": "SPRITESHEETS/stickers.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/stickers.png",
+   "image_px": [
+    1420,
+    1140
+   ],
+   "tile_px": [
+    284,
+    380
+   ],
+   "native_px": [
+    71,
+    95
+   ],
+   "layout": "grid",
+   "columns": 5,
+   "rows": 3,
+   "count": 15,
+   "order": "Balatro sticker sheet, row-major as in the game (5 per row)",
+   "names": [
+    "sticker 0",
+    "sticker 1",
+    "sticker 2",
+    "sticker 3",
+    "sticker 4",
+    "sticker 5",
+    "sticker 6",
+    "sticker 7",
+    "sticker 8",
+    "sticker 9",
+    "sticker 10",
+    "sticker 11",
+    "sticker 12",
+    "sticker 13",
+    "sticker 14"
+   ],
+   "source": "Balatro (LocalThunk); supplied by the repo owner, upscaled x4 nearest-neighbour"
   },
   {
    "file": "SPRITESHEETS/spritesheet.png",
