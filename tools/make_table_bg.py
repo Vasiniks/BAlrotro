@@ -1,24 +1,28 @@
-"""The in-run background (Balatro's paint shader) for every blind and booster pack, as still pictures in one sheet.
+"""The in-run background for every blind and booster pack, as stills in one sheet: the real swirl recoloured.
 
     python3 tools/make_table_bg.py          -> SPRITESHEETS/table-bg.jpg (+ manifest entry)
 
-Balatro draws the table on its 'background' shader, coloured by ease_background_colour_blind (common_events.lua):
-Small / Big Blind #50846e (contrast 1); a boss: lighten(mix(boss colour, BLACK, 0.3), 0.1) with the boss colour as
-the special colour (contrast 2); showdown bosses BLUE / RED / dark (contrast 3); a won run #4f6367; each booster pack
-its own. Generated, not a supplied asset: one frame of the shader per tile, spin 0.
+The pattern is the supplied frame of Balatro's swirl (sources/MenuBackground.png, see make_menu_bg.py), coloured the way
+ease_background_colour_blind (common_events.lua) colours the in-run shader: Small / Big Blind #50846e (contrast 1); a
+boss: lighten(mix(boss colour, BLACK, 0.3), 0.1) with the boss colour as the special colour (contrast 2); showdown
+bosses BLUE / RED / dark (contrast 3); a won run #4f6367; each booster pack its own.
+Recolouring: the splash shader mixes RED, BLUE and BLACK and adds a white flash, so every source pixel is
+u1 RED + u2 BLUE + u3 BLACK + f WHITE with u1+u2+u3+f = 1: a fixed linear function of its RGB. The background shader
+puts C (special) where RED was, L (light) where BLUE was, D (dark) for BLACK (plus its 0.3/contrast wash of C), and
+keeps the flash as gloss. Linear in RGB, so each tile is one colour-matrix conversion of the frame.
 Tiles (6 x 6 grid, row-major): 1..30 = blind id (blinds.json order: Small, Big, then the bosses), 31 won,
 32 Arcana (tarot) pack, 33 Celestial (planet), 34 Spectral, 35 Standard, 36 Buffoon. Each tile covers graph units
-x -12..12, y -17..15 like menu-bg.png.
+x -12..12, y -17..15 like menu-bg.jpg, at 20 pixels per unit.
 """
 import json
-import math
 import os
 
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "SPRITESHEETS")
-X0, X1, Y0, Y1, PPU = -12.0, 12.0, -17.0, 15.0, 6
+X0, X1, Y0, Y1, PPU = -12.0, 12.0, -17.0, 15.0, 20
+GLOSS = 0.6                     # how much of the frame's white flash stays on the table (the paint is less shiny)
 SW, SH, UNIT = 1920.0, 1080.0, 96.0
 TIME = 37.0
 COLS = 6
@@ -72,67 +76,65 @@ def variants():
     return out
 
 
-def weights(sx, sy, contrast, spin=0.0):
-    """the shader's colour weights at one screen pixel: (c1p, c2p, c3p, light)"""
-    diag = math.hypot(SW, SH)
-    px = diag / 745.0
-    ux = (math.floor(sx / px) * px - 0.5 * SW) / diag
-    uy = (math.floor(sy / px) * px - 0.5 * SH) / diag
-    ln = math.hypot(ux, uy)
-    ang = math.atan2(uy, ux) + 302.2 - 20.0 * (spin * ln + (1.0 - spin))
-    mx, my = SW / diag / 2, SH / diag / 2
-    vx, vy = (ln * math.cos(ang) + mx - mx) * 30, (ln * math.sin(ang) + my - my) * 30
-    speed = TIME * 2.0
-    u2x = u2y = vx + vy
-    for _ in range(5):
-        m = math.sin(max(vx, vy))
-        u2x, u2y = u2x + m + vx, u2y + m + vy
-        vx += 0.5 * math.cos(5.1123314 + 0.353 * u2y + speed * 0.131121)
-        vy += 0.5 * math.sin(u2x - 0.113 * speed)
-        t = math.cos(vx + vy) - math.sin(vx * 0.711 - vy)
-        vx, vy = vx - t, vy - t
-    cm = 0.25 * contrast + 0.5 * spin + 1.2
-    res = min(2.0, max(0.0, math.hypot(vx, vy) * 0.035 * cm))
-    c1 = max(0.0, 1.0 - cm * abs(1.0 - res))
-    c2 = max(0.0, 1.0 - cm * abs(res))
-    c3 = 1.0 - min(1.0, c1 + c2)
-    return c1, c2, c3
+def solve4(m, v):
+    """x with m x = v (4x4, Gauss-Jordan)"""
+    a = [list(r) + [v[i]] for i, r in enumerate(m)]
+    for c in range(4):
+        p = max(range(c, 4), key=lambda r: abs(a[r][c]))
+        a[c], a[p] = a[p], a[c]
+        a[c] = [x / a[c][c] for x in a[c]]
+        for r in range(4):
+            if r != c:
+                a[r] = [x - a[r][c] * y for x, y in zip(a[r], a[c])]
+    return [a[r][4] for r in range(4)]
+
+
+def unmix():
+    """weights (u1 RED, u2 BLUE, u3 BLACK, f WHITE) = W · (r, g, b, 1), RGB in 0..1: columns of the inverse matrix"""
+    m = [[RED[q], BLUE[q], BLACK[q], 1.0] for q in range(3)] + [[1.0, 1.0, 1.0, 1.0]]
+    cols = [solve4(m, [1.0 if i == j else 0.0 for i in range(4)]) for j in range(4)]   # column j of the inverse
+    return [[cols[j][i] for j in range(4)] for i in range(4)]                           # W[i][j]
+
+
+def recolour_matrix(L, C, D, contrast):
+    """PIL 12-tuple: out = base C + (1 - base)(u1 C + u2 L + u3 D) + GLOSS f, as an affine map of the source RGB"""
+    W = unmix()
+    base = 0.3 / contrast
+    out = []
+    for q in range(3):
+        coef = [(1 - base) * C[q], (1 - base) * L[q], (1 - base) * D[q], GLOSS]   # per weight u1, u2, u3, f
+        row = [sum(coef[i] * W[i][j] for i in range(4)) for j in range(4)]           # times (r, g, b, 1)
+        out += [row[0], row[1], row[2], 255 * (row[3] + base * C[q])]
+    return tuple(out)
 
 
 def main():
-    w, h = round((X1 - X0) * PPU), round((Y1 - Y0) * PPU)
+    import make_menu_bg
+    src = Image.open(os.path.join(ROOT, "sources", "MenuBackground.png")).convert("RGB")
+    frame = make_menu_bg.swirl_canvas(src, PPU)
+    w, h = frame.size
     vs = variants()
     rows = (len(vs) + COLS - 1) // COLS
     sheet = Image.new("RGB", (COLS * w, rows * h))
-    cache = {}
     for k, (L, C, D, contrast) in enumerate(vs):
-        if contrast not in cache:                      # the weights only depend on the contrast
-            cache[contrast] = [[weights(SW / 2 + (X0 + (i + 0.5) / PPU) * UNIT, SH / 2 - (Y1 - (j + 0.5) / PPU) * UNIT, contrast)
-                                for i in range(w)] for j in range(h)]
-        wt = cache[contrast]
-        tile = Image.new("RGB", (w, h))
-        px = tile.load()
-        base = 0.3 / contrast
-        for j in range(h):
-            for i in range(w):
-                c1, c2, c3 = wt[j][i]
-                px[i, j] = tuple(round(255 * min(1.0, max(0.0, base * C[q] + (1 - base) * (C[q] * c1 + L[q] * c2 + D[q] * c3))))
-                                 for q in range(3))
-        sheet.paste(tile, ((k % COLS) * w, (k // COLS) * h))
+        sheet.paste(frame.convert("RGB", recolour_matrix(L, C, D, contrast)), ((k % COLS) * w, (k // COLS) * h))
     file = "SPRITESHEETS/table-bg.jpg"               # smooth paint, no transparency: a JPEG is a sixth of the PNG
-    sheet.save(os.path.join(ROOT, file), quality=88, optimize=True)
+    sheet.save(os.path.join(ROOT, file), quality=86, optimize=True, progressive=True)
     man_path = os.path.join(OUT, "manifest.json")
     man = json.load(open(man_path))
     entry = {"file": file, "url": "https://vasiniks.github.io/BAlrotro/" + file, "image_px": list(sheet.size), "tile_px": [w, h],
              "layout": "grid", "columns": COLS, "rows": rows, "count": len(vs),
              "order": "1..30 blind id (Small, Big, bosses), 31 won, 32 Arcana, 33 Celestial, 34 Spectral, 35 Standard, 36 Buffoon",
              "graph_units": {"x": [X0, X1], "y": [Y0, Y1]},
-             "source": "generated by tools/make_table_bg.py: stills of Balatro's background shader in each blind / pack colour"}
+             "source": "tools/make_table_bg.py: the supplied swirl (sources/MenuBackground.png) recoloured per blind / pack"}
     man["sheets"] = [s for s in man["sheets"] if s["file"] not in (file, "SPRITESHEETS/table-bg.png")] + [entry]
     with open(man_path, "w") as fh:
         json.dump(man, fh, indent=1, ensure_ascii=False)
+        fh.write("\n")
     print(file, sheet.size, len(vs), "tiles")
 
 
 if __name__ == "__main__":
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     main()

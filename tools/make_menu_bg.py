@@ -1,78 +1,56 @@
-"""The main menu's swirling red / blue background, as one still picture (Desmos can't run shaders).
+"""The main menu's swirling red / blue background, from the real game (sources/MenuBackground.png, supplied by the owner).
 
-    python3 tools/make_menu_bg.py          -> SPRITESHEETS/menu-bg.png (+ manifest entry)
+    python3 tools/make_menu_bg.py          -> SPRITESHEETS/menu-bg.jpg (+ manifest entry)
 
-A frame of Balatro's 'splash' shader as the main menu runs it (game.lua: vort_speed 0.4, colour_1 RED, colour_2 BLUE,
-mid_flash 0, vort_offset 0), evaluated per pixel here. Generated, not a supplied asset. The picture covers graph
-units x -12..12, y -17..15 (the game area is about x -10..10, y -5.75..5.75); 1 Balatro unit = 96 screen pixels of
-a 1920x1080 window centred on the graph origin.
+The supplied 1280x720 frame of Balatro's splash swirl fills the game area: graph x -12..12 (its full width), centred on
+y = 0, so 13.5 units tall. The picture covers graph x -12..12, y -17..15 like every full-screen layer (any window shape);
+above and below the frame it continues as its own mirror image, fading darker, so a tall window never shows an edge.
+64 pixels per graph unit (1.2x the source, Lanczos): smooth on a 4K screen. JPEG: no transparency, a sixth of a PNG.
 """
 import json
-import math
 import os
 
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "SPRITESHEETS")
-X0, X1, Y0, Y1, PPU = -12.0, 12.0, -17.0, 15.0, 15     # graph-unit extent, image pixels per unit
-SW, SH, UNIT = 1920.0, 1080.0, 96.0                   # the virtual window the shader runs in
-TIME, VORT_SPEED = 40.0, 0.4
-RED, BLUE = (254 / 255, 95 / 255, 85 / 255), (0, 157 / 255, 1.0)
-BLACK = tuple(0.6 * c / 255 for c in (79, 99, 103))
+X0, X1, Y0, Y1, PPU = -12.0, 12.0, -17.0, 15.0, 64
 
 
-def shade(sx, sy):
-    diag = math.hypot(SW, SH)
-    px = diag / 700.0
-    ux = (math.floor(sx / px) * px - 0.5 * SW) / diag
-    uy = (math.floor(sy / px) * px - 0.5 * SH) / diag
-    ln = math.hypot(ux, uy)
-    speed = TIME * VORT_SPEED
-    ang = math.atan2(uy, ux) + (2.2 + 0.4 * min(6.0, speed)) * ln - 1.0 - speed * 0.05 - min(6.0, speed) * speed * 0.02
-    mx, my = SW / diag / 2, SH / diag / 2
-    svx, svy = (ln * math.cos(ang) + mx) - mx, (ln * math.sin(ang) + my) - my
-    svx, svy = svx * 30, svy * 30
-    speed = TIME * 6.0 * VORT_SPEED + 1033.0
-    u2x = u2y = svx + svy
-    for _ in range(5):
-        m = math.sin(max(svx, svy))
-        u2x, u2y = u2x + m + svx, u2y + m + svy
-        svx += 0.5 * math.cos(5.1123314 + 0.353 * u2y + speed * 0.131121)
-        svy += 0.5 * math.sin(u2x - 0.113 * speed)
-        t = math.cos(svx + svy) - math.sin(svx * 0.711 - svy)
-        svx, svy = svx - t, svy - t
-    res = min(2.0, max(-2.0, 1.5 + math.hypot(svx, svy) * 0.12 - 0.17 * min(10.0, TIME * 1.2 - 4.0)))
-    if res < 0.2:
-        res = (res - 0.2) * 0.6 + 0.2
-    c1 = max(0.0, 1.0 - 2.0 * abs(1.0 - res))
-    c2 = max(0.0, 1.0 - 2.0 * res)
-    cb = 1.0 - min(1.0, c1 + c2)
-    col = [RED[i] * c1 + BLUE[i] * c2 + BLACK[i] * cb for i in range(3)]
-    flash = max(0.0, max(c1, c2) * 5.0 - 4.4)
-    return tuple(round(255 * min(1.0, (c * (1 - flash) + flash))) for c in col)
+def swirl_canvas(src, ppu):
+    """the source frame across x -12..12 centred on y = 0, mirrored above / below to fill y -17..15"""
+    w, h = round((X1 - X0) * ppu), round((Y1 - Y0) * ppu)
+    band = src.resize((w, round(w * src.height / src.width)), Image.LANCZOS)
+    top = round((Y1 - band.height / ppu / 2) * ppu)          # rows above the band (y = 0 is Y1 units from the top)
+    out = Image.new("RGB", (w, h))
+    out.paste(band, (0, top))
+    flip = band.transpose(Image.FLIP_TOP_BOTTOM)
+    for k in range(1, 4):                                  # mirrored copies until the picture is full
+        out.paste(flip if k % 2 else band, (0, top - k * band.height))
+        out.paste(flip if k % 2 else band, (0, top + k * band.height))
+    # outside the frame, fade smoothly towards 45 % darker (no step at the seam)
+    shade = Image.new("L", (1, h))
+    for j in range(h):
+        d = max(top - j, j - (top + band.height), 0) / (0.6 * band.height)
+        shade.putpixel((0, j), round(255 * 0.45 * min(1.0, d)))
+    return Image.composite(Image.new("RGB", (w, h)), out, shade.resize((w, h)))
 
 
 def main():
-    w, h = round((X1 - X0) * PPU), round((Y1 - Y0) * PPU)
-    im = Image.new("RGB", (w, h))
-    px = im.load()
-    for j in range(h):
-        gy = Y1 - (j + 0.5) / PPU
-        for i in range(w):
-            gx = X0 + (i + 0.5) / PPU
-            px[i, j] = shade(SW / 2 + gx * UNIT, SH / 2 - gy * UNIT)
-    file = "SPRITESHEETS/menu-bg.png"
-    im.save(os.path.join(ROOT, file), optimize=True)
+    src = Image.open(os.path.join(ROOT, "sources", "MenuBackground.png")).convert("RGB")
+    im = swirl_canvas(src, PPU)
+    file = "SPRITESHEETS/menu-bg.jpg"
+    im.save(os.path.join(ROOT, file), quality=90, optimize=True, progressive=True)
     man_path = os.path.join(OUT, "manifest.json")
     man = json.load(open(man_path))
-    entry = {"file": file, "url": "https://vasiniks.github.io/BAlrotro/" + file, "image_px": [w, h], "layout": "single",
+    entry = {"file": file, "url": "https://vasiniks.github.io/BAlrotro/" + file, "image_px": list(im.size), "layout": "single",
              "graph_units": {"x": [X0, X1], "y": [Y0, Y1]},
-             "source": "generated by tools/make_menu_bg.py: a still of Balatro's main-menu splash shader (red / blue swirl)"}
-    man["sheets"] = [s for s in man["sheets"] if s["file"] != file] + [entry]
+             "source": "tools/make_menu_bg.py from sources/MenuBackground.png (Balatro's main-menu swirl, supplied by the owner)"}
+    man["sheets"] = [s for s in man["sheets"] if s["file"] not in (file, "SPRITESHEETS/menu-bg.png")] + [entry]
     with open(man_path, "w") as fh:
         json.dump(man, fh, indent=1, ensure_ascii=False)
-    print(file, (w, h))
+        fh.write("\n")
+    print(file, im.size)
 
 
 if __name__ == "__main__":
