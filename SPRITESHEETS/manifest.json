@@ -1261,6 +1261,16 @@
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/card-shadow.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/card-shadow.png",
+   "image_px": [
+    198,
+    252
+   ],
+   "layout": "single",
+   "source": "drop shadow of a card (game repo dev/patches/shadows.py): rounded, blurred, 35 % black"
   }
  ]
 }
