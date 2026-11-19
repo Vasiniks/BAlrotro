@@ -1083,6 +1083,116 @@
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
   },
   {
+   "file": "SPRITESHEETS/settings-video.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/settings-video.png",
+   "image_px": [
+    1271,
+    973
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/settings-graphics.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/settings-graphics.png",
+   "image_px": [
+    1271,
+    973
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/collection-index.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/collection-index.png",
+   "image_px": [
+    1162,
+    936
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/collection-page-cycle.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/collection-page-cycle.png",
+   "image_px": [
+    1162,
+    936
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/collection-page.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/collection-page.png",
+   "image_px": [
+    1162,
+    936
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/stats.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/stats.png",
+   "image_px": [
+    1547,
+    788
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/customize-spades.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-spades.png",
+   "image_px": [
+    1017,
+    797
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/customize-hearts.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-hearts.png",
+   "image_px": [
+    1017,
+    797
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/customize-clubs.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-clubs.png",
+   "image_px": [
+    1017,
+    797
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/customize-diamonds.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-diamonds.png",
+   "image_px": [
+    1017,
+    797
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
+   "file": "SPRITESHEETS/options-main-menu-panel.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/options-main-menu-panel.png",
+   "image_px": [
+    671,
+    539
+   ],
+   "layout": "single",
+   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
+  },
+  {
    "file": "SPRITESHEETS/menu-title.png",
    "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/menu-title.png",
    "image_px": [
@@ -1096,7 +1206,7 @@
    "file": "SPRITESHEETS/menu-bar.png",
    "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/menu-bar.png",
    "image_px": [
-    1334,
+    970,
     211
    ],
    "layout": "single",
@@ -1117,7 +1227,7 @@
    "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/run-setup.png",
    "image_px": [
     1144,
-    1188
+    935
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
@@ -1147,7 +1257,7 @@
    "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/options-panel.png",
    "image_px": [
     671,
-    880
+    539
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
@@ -1326,28 +1436,8 @@
    "file": "SPRITESHEETS/settings-game.png",
    "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/settings-game.png",
    "image_px": [
-    1271,
-    973
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/settings-video.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/settings-video.png",
-   "image_px": [
-    1271,
-    973
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/settings-graphics.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/settings-graphics.png",
-   "image_px": [
-    1271,
-    973
+    820,
+    796
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
@@ -1356,8 +1446,8 @@
    "file": "SPRITESHEETS/settings-audio.png",
    "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/settings-audio.png",
    "image_px": [
-    1271,
-    973
+    820,
+    796
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
@@ -1367,37 +1457,7 @@
    "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/deck-descriptions.png",
    "image_px": [
     484,
-    3630
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/collection-index.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/collection-index.png",
-   "image_px": [
-    1162,
-    936
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/collection-page-cycle.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/collection-page-cycle.png",
-   "image_px": [
-    1162,
-    936
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/collection-page.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/collection-page.png",
-   "image_px": [
-    1162,
-    936
+    484
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
@@ -1433,61 +1493,21 @@
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
   },
   {
-   "file": "SPRITESHEETS/stats.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/stats.png",
+   "file": "SPRITESHEETS/credits.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/credits.png",
    "image_px": [
-    1547,
-    788
+    1115,
+    868
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
   },
   {
-   "file": "SPRITESHEETS/customize-spades.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-spades.png",
+   "file": "SPRITESHEETS/btn-swap.png",
+   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/btn-swap.png",
    "image_px": [
-    1017,
-    797
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/customize-hearts.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-hearts.png",
-   "image_px": [
-    1017,
-    797
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/customize-clubs.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-clubs.png",
-   "image_px": [
-    1017,
-    797
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/customize-diamonds.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/customize-diamonds.png",
-   "image_px": [
-    1017,
-    797
-   ],
-   "layout": "single",
-   "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
-  },
-  {
-   "file": "SPRITESHEETS/options-main-menu-panel.png",
-   "url": "https://vasiniks.github.io/BAlrotro/SPRITESHEETS/options-main-menu-panel.png",
-   "image_px": [
-    671,
-    539
+    98,
+    78
    ],
    "layout": "single",
    "source": "baked UI picture (game repo dev/baker.py): static panels and pixel text in one image"
